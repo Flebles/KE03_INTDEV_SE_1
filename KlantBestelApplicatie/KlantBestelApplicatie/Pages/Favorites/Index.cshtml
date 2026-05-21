@@ -1,0 +1,46 @@
+﻿@page
+@model KlantBestelApplicatie.Pages.Favorites.IndexModel
+
+<h1 class="mb-4">
+    Favorieten
+</h1>
+
+@if (!Model.Products.Any())
+{
+    <div class="alert alert-info">
+        Geen favorieten toegevoegd.
+    </div>
+}
+else
+{
+    <div class="row row-cols-1 row-cols-md-3 g-4">
+
+        @foreach (var product in Model.Products)
+        {
+            <div class="col">
+
+                <div class="card h-100 shadow-sm">
+
+                    <img src="@product.PrimaryImage"
+                         class="card-img-top product-image"
+                         alt="@product.Name" />
+
+                    <div class="card-body">
+
+                        <h2 class="h5">
+                            @product.Name
+                        </h2>
+
+                        <div class="fw-bold text-primary">
+                            @product.Price.ToString("C")
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+        }
+
+    </div>
+}

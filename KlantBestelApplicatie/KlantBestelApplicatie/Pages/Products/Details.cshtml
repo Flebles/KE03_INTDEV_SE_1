@@ -1,0 +1,116 @@
+﻿@page "{id:int}"
+@model KlantBestelApplicatie.Pages.Products.DetailsModel
+
+@if (Model.Product is not null)
+{
+    <div class="row g-5">
+
+        <div class="col-lg-6">
+
+            <img id="mainImage"
+                 src="@Model.Product.PrimaryImage"
+                 class="img-fluid rounded border main-product-image"
+                 alt="@Model.Product.Name" />
+
+            @if (Model.Product.ImageUrls.Count > 1)
+            {
+                <div class="d-flex gap-2 mt-3">
+
+                    @foreach (var image in Model.Product.ImageUrls)
+                    {
+                        <button type="button"
+                                class="btn p-0 thumbnail-button"
+                                data-image="@image">
+
+                            <img src="@image"
+                                 class="thumbnail-image"
+                                 alt="@Model.Product.Name" />
+
+                        </button>
+                    }
+
+                </div>
+            }
+
+        </div>
+
+        <div class="col-lg-6">
+
+            <h1 class="mb-3">
+                @Model.Product.Name
+            </h1>
+
+            <div class="h3 text-primary mb-4">
+                @Model.Product.Price.ToString("C")
+            </div>
+
+            <form method="post"
+                  asp-page-handler="AddToCart">
+
+                <input type="hidden"
+                       name="id"
+                       value="@Model.Product.Id" />
+
+                <div class="mb-3">
+
+                    <label asp-for="Quantity"
+                           class="form-label">
+                        Aantal
+                    </label>
+
+                    <input asp-for="Quantity"
+                           type="number"
+                           min="1"
+                           class="form-control quantity-input" />
+
+                </div>
+
+                <button type="submit"
+                        class="btn btn-success">
+                    Voeg toe aan winkelwagen
+                </button>
+
+            </form>
+
+            <hr class="my-4" />
+
+            <h2 class="h5">
+                Beschrijving
+            </h2>
+
+            <p>
+                @Model.Product.Description
+            </p>
+
+            <h2 class="h5 mt-4">
+                Specificaties
+            </h2>
+
+            <table class="table">
+
+                <tr>
+                    <th>Merk</th>
+                    <td>@Model.Product.Brand</td>
+                </tr>
+
+                <tr>
+                    <th>Kleur</th>
+                    <td>@Model.Product.Color</td>
+                </tr>
+
+                <tr>
+                    <th>Gewicht</th>
+                    <td>@Model.Product.Weight</td>
+                </tr>
+
+                <tr>
+                    <th>Garantie</th>
+                    <td>@Model.Product.WarrantyDuration</td>
+                </tr>
+
+            </table>
+
+        </div>
+
+    </div>
+}

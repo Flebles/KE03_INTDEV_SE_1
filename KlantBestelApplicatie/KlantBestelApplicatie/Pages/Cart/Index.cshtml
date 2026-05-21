@@ -1,0 +1,48 @@
+﻿@page
+@model KlantBestelApplicatie.Pages.Cart.IndexModel
+
+<h1 class="mb-4">
+    Winkelwagen
+</h1>
+
+@if (!Model.Items.Any())
+{
+    <div class="alert alert-info">
+        Je winkelwagen is leeg.
+    </div>
+}
+else
+{
+    <div class="card shadow-sm">
+
+        <div class="card-body">
+
+            @foreach (var item in Model.Items)
+            {
+                <div class="d-flex justify-content-between border-bottom py-3">
+
+                    <div>
+                        <div class="fw-bold">
+                            @item.Product.Name
+                        </div>
+
+                        <div>
+                            Aantal: @item.Quantity
+                        </div>
+                    </div>
+
+                    <div class="fw-bold">
+                        @item.LineTotal.ToString("C")
+                    </div>
+
+                </div>
+            }
+
+            <div class="text-end mt-4 h4">
+                Totaal: @Model.Total.ToString("C")
+            </div>
+
+        </div>
+
+    </div>
+}
