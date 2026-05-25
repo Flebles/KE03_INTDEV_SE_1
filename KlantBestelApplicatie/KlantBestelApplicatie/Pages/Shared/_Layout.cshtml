@@ -30,7 +30,7 @@
 
             <a asp-page="/Index"
                class="navbar-brand fw-bold logo-text">
-                LOGO
+                MATRIX INC
             </a>
 
             <form asp-page="/Index"
@@ -39,15 +39,9 @@
 
                 <div class="input-group">
 
-                    <input type="search"
-                           name="search"
-                           class="form-control"
-                           placeholder="Zoek producten" />
+                    <input type="search" name="search" class="form-control" placeholder="Zoek producten" />
 
-                    <button class="btn btn-outline-secondary"
-                            type="submit">
-                        🔍
-                    </button>
+                    <button class="btn btn-outline-secondary" type="submit">🔍</button>
 
                 </div>
 
@@ -79,6 +73,13 @@
     <main class="container py-4">
         @RenderBody()
     </main>
+
+    <footer class="border-top footer text-muted">
+        <div class="container">
+            <!-- Privacy page has been deleted, but will serve as a placeholder for now -->
+            &copy; 2026 - Matrix Inc. - <a asp-area="" asp-page="/Privacy">Privacy</a>
+        </div>
+    </footer>
 
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js"></script>
