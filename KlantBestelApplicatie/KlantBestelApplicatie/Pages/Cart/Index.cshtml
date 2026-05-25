@@ -1,48 +1,106 @@
 ﻿@page
 @model KlantBestelApplicatie.Pages.Cart.IndexModel
-
-<h1 class="mb-4">
-    Winkelwagen
-</h1>
-
-@if (!Model.Items.Any())
-{
-    <div class="alert alert-info">
-        Je winkelwagen is leeg.
-    </div>
+@{
+    ViewData["Title"] = "Winkelwagen";
 }
-else
-{
-    <div class="card shadow-sm">
 
-        <div class="card-body">
-
-            @foreach (var item in Model.Items)
-            {
-                <div class="d-flex justify-content-between border-bottom py-3">
-
-                    <div>
-                        <div class="fw-bold">
-                            @item.Product.Name
-                        </div>
-
-                        <div>
-                            Aantal: @item.Quantity
-                        </div>
-                    </div>
-
-                    <div class="fw-bold">
-                        @item.LineTotal.ToString("C")
-                    </div>
-
-                </div>
-            }
-
-            <div class="text-end mt-4 h4">
-                Totaal: @Model.Total.ToString("C")
+<div class="row g-4">
+    <div class="col-lg-8">
+        <div class="d-flex align-items-center justify-content-between mb-3">
+            <div>
+                <h1 class="h3 mb-1">Winkelwagen</h1>
+                <p class="text-muted mb-0">Pas aantallen aan of verwijder producten.</p>
             </div>
-
         </div>
 
+        <!-- if nothing's found in the user's shopping cart then just tell the user its empty -->
+        @if (!Model.Items.Any())
+        {
+            <div class="alert alert-info">
+                Je winkelwagen is leeg.
+            </div>
+        }
+        else
+        {
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <!-- generate the products into the cart ui with their associated image, the ability to change the amount and to remove items -->
+                    @foreach (var item in Model.Items)
+                    {
+                        <div class="row align-items-center g-3 py-3 border-bottom">
+                            <div class="col-md-2">
+                                <a asp-page="/Products/Details" asp-route-id="@item.Product.Id">
+                                    <img src="@item.Product.PrimaryImage"
+                                         alt="@item.Product.Name"
+                                         class="img-fluid rounded" />
+                                </a>
+                            </div>
+
+                            <div class="col-md-4">
+                                <!-- clicking the product in the cart takes you to the details page of this product -->
+                                <a asp-page="/Products/Details"
+                                   asp-route-id="@item.Product.Id"
+                                   class="text-decoration-none text-dark">
+                                    <h2 class="h6 mb-1">@item.Product.Name</h2>
+                                </a>
+                                <div class="text-muted">@item.Product.Price.ToString("C") per stuk</div>
+                            </div>
+
+                            <div class="col-md-3">
+                                <form method="post" asp-page-handler="UpdateQuantity" class="d-flex gap-2 align-items-center">
+                                    <input type="hidden" name="id" value="@item.Product.Id" />
+                                    <input type="number" name="quantity" min="1" value="@item.Quantity" class="form-control quantity-input" />
+                                    <button type="submit" class="btn btn-outline-primary btn-sm">
+                                        Bijwerken
+                                    </button>
+                                </form>
+                            </div>
+
+                            <div class="col-md-2 text-md-end fw-semibold">
+                                @item.LineTotal.ToString("C")
+                            </div>
+
+                            <!-- remove button -->
+                            <div class="col-md-1 text-md-end">
+                                <form method="post" asp-page-handler="Remove" asp-route-id="@item.Product.Id">
+                                    <button type="submit" class="btn btn-outline-danger btn-sm">
+                                        ×
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        }
     </div>
-}
+
+    <div class="col-lg-4">
+        <div class="card shadow-sm position-sticky" style="top: 6rem;">
+            <div class="card-body">
+                <h2 class="h4 mb-3">Overzicht</h2>
+
+                <div class="d-flex justify-content-between mb-2">
+                    <span>Subtotaal</span>
+                    <span>@Model.Subtotal.ToString("C")</span>
+                </div>
+
+                <div class="d-flex justify-content-between mb-2">
+                    <span>Verzending</span>
+                    <span>@Model.Shipping.ToString("C")</span>
+                </div>
+
+                <hr />
+
+                <div class="d-flex justify-content-between mb-4 fw-semibold">
+                    <span>Totaalprijs</span>
+                    <span>@Model.Total.ToString("C")</span>
+                </div>
+
+                <a asp-page="/Checkout/Index" class="btn btn-primary w-100">
+                    Bestellen en betalen
+                </a>
+            </div>
+        </div>
+    </div>
+</div>

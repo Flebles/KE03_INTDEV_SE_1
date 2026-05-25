@@ -1,0 +1,117 @@
+﻿@page
+@model KlantBestelApplicatie.Pages.Checkout.IndexModel
+@{
+    ViewData["Title"] = "Afrekenen";
+}
+
+<div class="d-flex align-items-center mb-4">
+    <a asp-page="/Cart/Index" class="btn btn-outline-secondary me-3">
+        Terug
+    </a>
+    <h1 class="h3 mb-0">Afrekenen</h1>
+</div>
+
+<div class="row g-4">
+    <div class="col-lg-7">
+        <div class="card shadow-sm">
+            <div class="card-body p-4">
+                <h2 class="h4 mb-4">Betaal methode</h2>
+
+                <form method="post">
+                    <div class="mb-4">
+                        <!-- these payment methods arent actually used, this is solely for being part of a typical checkout. -->
+                        <label asp-for="PaymentMethod" class="form-label">Betaalmethode</label>
+                        <select asp-for="PaymentMethod" class="form-select">
+                            <option value="iDEAL">iDEAL</option>
+                            <option value="Bancontact">Bancontact</option>
+                            <option value="Creditcard">Creditcard</option>
+                        </select>
+                    </div>
+
+                    <h2 class="h4 mb-3">Gegevens</h2>
+
+                    <!-- input fields for completing the order -->
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label asp-for="Street" class="form-label">Adres</label>
+                            <input asp-for="Street" class="form-control" />
+                        </div>
+
+                        <div class="col-md-6">
+                            <label asp-for="HouseNumber" class="form-label">Huisnummer</label>
+                            <input asp-for="HouseNumber" class="form-control" />
+                        </div>
+
+                        <div class="col-md-6">
+                            <label asp-for="Postcode" class="form-label">Postcode</label>
+                            <input asp-for="Postcode" class="form-control" />
+                        </div>
+
+                        <div class="col-md-6">
+                            <label asp-for="City" class="form-label">Stad</label>
+                            <input asp-for="City" class="form-control" />
+                        </div>
+
+                        <div class="col-md-6">
+                            <label asp-for="FirstName" class="form-label">Voornaam</label>
+                            <input asp-for="FirstName" class="form-control" />
+                        </div>
+
+                        <div class="col-md-6">
+                            <label asp-for="LastName" class="form-label">Achternaam</label>
+                            <input asp-for="LastName" class="form-control" />
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-5">
+        <div class="card shadow-sm">
+            <div class="card-body p-4">
+                <h2 class="h4 mb-4">Overzicht</h2>
+
+                <div class="d-flex justify-content-between mb-2">
+                    <span>Subtotaal</span>
+                    <span>@Model.Subtotal.ToString("C")</span>
+                </div>
+
+                <div class="d-flex justify-content-between mb-2">
+                    <span>Verzending</span>
+                    <span>@Model.Shipping.ToString("C")</span>
+                </div>
+
+                <div class="d-flex justify-content-between fw-semibold mb-4">
+                    <span>Totaalprijs</span>
+                    <span>@Model.Total.ToString("C")</span>
+                </div>
+
+                @if (Model.OrderReceived)
+                {
+                    <div class="alert alert-success mb-0">
+                        Je bestelling is ontvangen!
+                    </div>
+                }
+                else
+                {
+                    <!-- submitting will send the information entered in the input fields under <div class="row g-3"> -->
+                    <form method="post">
+                        <input type="hidden" asp-for="PaymentMethod" />
+                        <input type="hidden" asp-for="Street" />
+                        <input type="hidden" asp-for="HouseNumber" />
+                        <input type="hidden" asp-for="Postcode" />
+                        <input type="hidden" asp-for="City" />
+                        <input type="hidden" asp-for="FirstName" />
+                        <input type="hidden" asp-for="LastName" />
+
+                        <!-- this button triggers a fake successful order message, because we're not actually paying for the products in this project -->
+                        <button type="submit" class="btn btn-primary w-100">
+                            Bestellen en betalen
+                        </button>
+                    </form>
+                }
+            </div>
+        </div>
+    </div>
+</div>
